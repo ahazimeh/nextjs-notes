@@ -1,0 +1,150 @@
+create next app, npx create-next-app
+
+for dynamic routes
+import {useRouter} from "next/router";
+const router = useRouter
+router.pathname, router.query// for pathname of the file and query params
+// you can also nest dynamic routes
+for [...slug] then router.query.slug is an array of dynamic routes
+
+import Link from "next/link"
+<Link replace href="">Portfolio</Link> replace to replace the page so you can't navigate back to the previous page
+href={{
+    pathname: '/portfolio/[projectid]',
+    query: { projectid: 2 }
+}}>Portfolio number
+
+<button onClick={() => {
+    // router.replace('/portfolio/1/2')
+    router.push('/portfolio/1/2')
+    // router.push(
+    //     {
+    //         pathname:'',
+    //         query:''
+    //     }
+    // )
+}}>Load Project A</button>
+
+404.js
+
+//above are the first 3 chapters
+
+what are <address> and <time> html used for, do they help for seo??????
+
+const humanReadableDate = new Date(date).toLocaleDateString('en-US', {
+day: 'numeric',
+month: 'long',
+year: 'numeric',
+});
+April 10, 2022
+
+event-item.module.css
+import classes from "./event-item.module.css";
+className={classes.item}
+
+component, folder called ui for components
+
+import { Fragment } from "react"; //what is the difference between this and <></>
+
+const yearInputRef = useRef()
+yearInputRef.current.value
+ref = {yearInputRef}
+
+isNaN() function: is not a number
+//first 4 chapters
+
+//for the frontend
+const {products} = props;
+//backend
+export async function getStaticProps(context) {
+    const { params } = context;
+    return { 
+        props: {
+            products: [{id:'p1',title: 'Product1'}]
+        },
+        revalidate: 10,
+        notFound: true,
+        redirect: {
+            destination: "/no-data"
+        }
+    };
+}
+
+export async function getStaticPaths() {
+    return {
+        paths: [
+            { params: { pid: 'p1' } },//pid is because the page called [pid] and p1 is the value for the parameter expected
+            { params: { pid: 'p2' } },
+            { params: { pid: 'p3' } },
+        ],
+        fallback: false //true // 'blocking'
+    }
+}
+
+export async function getServerSideProps(context) {
+    const { params,req,res }// you can manipulate the response if you want by adding something to it before sending it//// 105?????????
+    accessing the above could response could be important if you need access to header or cookie for example
+}
+
+import 'fs' from "fs/promises";91(from fs/promisses??????)
+import path from 'path'
+const filePath = path.join(process.cwd(),'data','dummy-backend.json');
+
+//to see the pages rendered next/server/pages
+
+useSWR
+//
+ch 6
+//
+import Head from "next/head";
+<Head>
+    <title>NextJS Events</title>
+    <meta "description" content="lorem...."/>
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+</Head>
+you can add key for meta tag if it doesn't contain a name so you tell next that this is unique and should be overwritten by another 1 if a conflict happens
+you can add head before component in the _appfor the general head and title
+
+_document.js
+import Document, { Html, Head, Main, NextScript } from "next/document";
+class MyDocument extends Document {
+    render() {
+        return (
+            <Html lang="en">
+                <Head />
+                <body>
+                    <div id="overlays" />
+                    <Main />
+                    <NextScript />
+                </body>
+            </Html>
+        );
+    }
+}
+export default MyDocument
+//div (overflays) was added to allow us to html content outside of our application
+component tree, for example for using these elements for react portals
+we can select this div with react portal to portal our modals or overlays to this element
+
+import Images from "next/image"
+<Image src={`/${image}`} alt={imageAlt} width={400} height={400} />
+
+
+api
+function handler(req, res) {
+    //for dynamic route, req.query.pageId
+    if(req.method === 'POST') {
+        req.body.email
+    }
+}
+export default handler;
+
+//react, <form onSubmit={submitFormHandler}>
+for the fetch:
+body: JSON.stringify(json object);
+Content-Type: 'application/json'
+
+function loadFeedbackHandler(id) {
+
+}
+loadFeedbackHandler.bind(null, id)
