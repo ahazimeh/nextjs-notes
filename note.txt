@@ -186,6 +186,97 @@ module.exports = (phase) => {
   };
 };
 
+vercel is a service of the same company that developed nextjs
+netlify also have great nextjs support and makes hosting and scaling is simple
 
 for static deployment
     export: next export
+
+
+authentication
+
+npm i mongodb
+lib folder or helpers
+
+[...nextauth].js
+import NextAuth from "next-auth";
+import Providers from "next-auth/providers"
+import { verifyPassword } from "../../../lib/auth";
+
+import { connectToDatabase } from "../../../lib/db";
+export default NextAuth({
+    session: {
+        jwt: true//default value anyway
+    },
+    providers: [
+        Providers.Credentials({
+            async authorize(credentials, req) {
+                const client = await connectToDatabase();
+
+                const usersCollection = client.db().collection('users');
+                const user = await usersCollection.findOne({ email: credentials.email })
+                if (!user) {
+                    client.close()
+                    throw new Error("No User Found!");
+                }
+
+                const isValid = await verifyPassword(credentials.password, user.password);
+                if (!isValid) {
+                    client.close()
+                    throw new Error('Could not log you in')
+                }
+
+                client.close()
+                return { email: user.email };
+
+            }
+        }),
+    ],
+
+})
+
+auth.js
+import { hash, compare } from "bcryptjs";
+
+export async function hashPassword(password) {
+    const hashedPassword = hash(password, 12);
+    return hashedPassword
+}
+
+export async function verifyPassword(password, hashedPassword) {
+    const isValid = await compare(password, hashedPassword)
+    return isValid;
+}
+
+frontend
+const result = await signIn('credentials', {
+    redirect: false,
+    email: enteredEmail,
+    password: enteredPassword
+})
+
+
+to see if a user is login or not//// Logout
+import { useSession, signOut } from "next-auth/client";
+const [session, loading] = useSession();
+if the user do have a session then he is logged in
+{!session && !loading && (
+    <li>
+        <Link href='/auth'>Login</Link>
+    </li>
+)}
+////logout
+signOut()
+
+to navigate away when not logged in or when logged in
+const [isLoading, setIsLoading] = useState(true);
+
+useEffect(() => {
+    getSession().then(session => {
+        setIsLoading(false)
+        if (!session) {
+        window.location.href = "/auth"
+        }
+    })
+}, [])
+
