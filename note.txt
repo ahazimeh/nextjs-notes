@@ -322,3 +322,11 @@ export async function getServerSideProps(context) {
       </Layout>
     </Provider>
     so we wrap everything with this provider
+
+//server side authentication checking
+const session = await getSession({ req: req });
+    if (!session) {
+        res.status(401).json({ message: 'Not authenticated!' });
+        return;
+    }
+    so it also work on the server
