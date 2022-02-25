@@ -330,3 +330,7 @@ const session = await getSession({ req: req });
         return;
     }
     so it also work on the server
+
+
+    NEXTAUTH_URL environment variable not set
+    you set the environment variable to your domain name and the error disapears
