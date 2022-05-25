@@ -334,3 +334,14 @@ const session = await getSession({ req: req });
 
     NEXTAUTH_URL environment variable not set
     you set the environment variable to your domain name and the error disapears
+
+
+
+Ch11:
+slug is more search engine friendly than ids in the url
+
+Link: if you pass anything but text to the link then it won't render an anchor tag for you, Link will also work if you didn't add <a></a> but it won't render an anchor tag
+<Link href='/'>
+<a>
+    </Link>
+</a>
