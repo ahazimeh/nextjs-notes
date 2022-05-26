@@ -345,3 +345,5 @@ Link: if you pass anything but text to the link then it won't render an anchor t
 <a>
     </Link>
 </a>
+
+image: layout response, it will fill the entire container
