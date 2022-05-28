@@ -347,3 +347,41 @@ Link: if you pass anything but text to the link then it won't render an anchor t
 </a>
 
 image: layout response, it will fill the entire container
+
+react-markdown package to take markdown and transform it to jsx
+look up for yaml format
+gray-matter package: allows us to read a md file and split it into meta data and the actual markdown content
+
+renders is to tell markdown how to render the markdown
+const customRenderers = {
+    //img(image) { // this property is found in the documentation of react-markdown
+    //    return ( <Image src={} alt={} width={} height={} />
+    //)
+    //},
+    p(paragraph) { //to get rid of the error in the console where image got wrapped with p tag
+    const { node } = paragraph;
+    if(node.children[0].tagName === 'img') {
+        const image = node.children[0];
+        return <div className={classes.image}>
+            <Image src={`/images/posts/${post.slug}/${image.properties.src}`} alt={} width={} height={} />
+        </div>
+    }
+    return <p> {paragraph.children} </p>;
+    }
+
+
+    code(code) { //code snippet
+      const { className, children } = code;
+      const language = className.split('-')[1]; // className is something like language-js => We need the "js" part here
+      return (
+        <SyntaxHighlighter //react-syntax-highlighter
+          style={atomDark} //react-syntax-highlighter/dist/esm/styles/prism// replace esm by cjs if the code is on the server side
+          language={language}
+          children={children}
+        />
+      );
+      }
+
+    
+}
+<ReactMarkdown components = {customRenderers}> {post.content} </ReactMarkdown>
